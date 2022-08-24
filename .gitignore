@@ -1,0 +1,9 @@
+# created by virtualenv automatically
+
+
+bin/**
+lib/**
+
+*.sqlite3
+**/__pycache__/**
+**/__pycache__
