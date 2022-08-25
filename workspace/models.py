@@ -15,7 +15,9 @@ class LabModule(models.Model):
 
 class LabTask(models.Model):
     task_name = models.CharField(max_length=100)
-    
+    lab_module = models.ForeignKey(LabModule, on_delete=models.CASCADE)
+
+
     class TaskStatus(models.TextChoices):
         NOT_DONE = 'ND', _('Not Done')
         FAILURE  = 'F', _('Failure')

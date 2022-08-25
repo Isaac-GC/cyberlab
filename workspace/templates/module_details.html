@@ -1,0 +1,19 @@
+{% if module_details %}
+    <dl>
+        <dt>{{ module_details.title }}</dt>
+        <dd>{{ module_details.description }}</dd>
+    </dl>
+
+    {% if lab_tasks %}
+        <ul>
+        {% for task in lab_tasks %}
+            <li>{{ task }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> No lab tasks available</p>
+    {% endif %}
+
+{% else %}
+    <p> No module details available</p>
+{% endif %}
