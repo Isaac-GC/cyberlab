@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block header %}
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/xterm.css" %}" rel="stylesheet">
+    <script href="{% static "js/xterm.js" %}"></script>
+
+    <style>
+        .sticky-table-header {
+            position:sticky;
+            top: 0 ;
+        }
+
+        .container {
+            margin-left: 0;
+        }
+
+        #description {
+            /** margin-left: 0; **/
+            height: 92vh;
+            overflow: auto;
+        }
+
+        #terminal-console {
+            height: 88vh;
+            background-color: rgb(90, 90, 90);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Menu</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ module_item.title }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-grid gap-0">
+            <div>
+                <label for="changeModuleSelect" class="form-label"><b>Change Lab Module</b></label>
+                <select id="changeModuleSelect" name="module" class="form-select">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option selected value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                <p class="mt-1">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown 
+                    printer took a galley of type and scrambled it to make a type specimen book. It has survived 
+                    not only five centuries, but also the leap into electronic typesetting, remaining essentially 
+                    unchanged. It was popularised in the 1960s with the release of Letraset sheets containing 
+                    Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+            </div>
+            {% if modules_list %}
+            <div class="table-responsive">
+            
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="sticky-table-header text-center">Task Name</th>
+                            <th scope="col" class="sticky-table-header text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for module_item in modules_list %}
+                        <tr>
+                            <td class="text-center">
+                                <a href="{% url 'workspace:overview' module_item.module_url_title %}">{{ module_item.title }} | Task Details</a>
+                            </td>
+                            <td class="text-center">Not Done</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No tasks found for module</p>
+        {% endif %}
+        </div>
+    </div>
+</div>
+<div class="container container-xl container-xxl min-vw-100">
+    <div class="row align-self-start mt-2 gx-2">
+        <div class="col-5 col-xxl-5" id="description">
+            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed metus vitae diam bibendum dignissim. Aenean eu varius dolor. Integer arcu est, vestibulum ut nulla nec, elementum accumsan nibh. Suspendisse vitae erat neque. Mauris suscipit, neque in bibendum tempus, lectus augue mattis lorem, nec fringilla purus magna et ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras convallis odio eu pretium facilisis. Morbi nec hendrerit arcu. Cras eu sapien dolor. Vivamus iaculis lobortis pellentesque. Nulla ultrices nisi sed leo varius, et fermentum arcu accumsan. Nam sagittis, tellus id faucibus euismod, est dui faucibus magna, ut placerat leo purus non lorem. Donec porttitor nulla vel magna elementum pharetra. </p>
+            <p> In hac habitasse platea dictumst. In semper nisi augue, non vulputate dolor pretium eu. Suspendisse potenti. Vestibulum maximus mattis justo, quis malesuada massa luctus nec. Nullam at convallis lectus, vel volutpat nibh. Pellentesque faucibus nibh arcu, at congue erat efficitur ac. Cras porta risus eu faucibus mattis. Vestibulum nisi ligula, placerat non consectetur sed, egestas nec nisl. Curabitur nec lectus ullamcorper, venenatis ligula ut, iaculis ex. Nam quam purus, facilisis non ipsum a, malesuada auctor elit. Cras lacus nibh, venenatis quis nibh in, rhoncus egestas lorem. Donec vestibulum cursus leo vitae luctus. In mauris nisl, porta at massa id, euismod euismod turpis. Aenean in eleifend magna, sed vulputate tortor. Cras quis ex vitae elit ullamcorper sagittis a id eros. Quisque ac ipsum quis tortor hendrerit iaculis vitae at arcu.</p>
+            <p>Vestibulum sed vehicula dui. Praesent turpis enim, luctus ac sollicitudin eu, vulputate ut risus. Nulla eget elit nulla. Sed et sem ac purus sodales placerat. Nunc et sollicitudin eros, auctor malesuada mauris. Fusce molestie felis ligula, et lacinia nisl maximus sit amet. Donec vel consectetur tellus, a fermentum dui. Vivamus iaculis, metus efficitur tincidunt euismod, diam massa fermentum purus, quis dignissim arcu dolor sed dui. Nam laoreet tortor ac odio pharetra, vel scelerisque urna pulvinar. Nulla aliquet iaculis sem hendrerit bibendum. In imperdiet fringilla massa eu molestie. </p>
+            <p>Sed tincidunt placerat lectus, et bibendum eros varius id. Integer ut odio sit amet odio maximus consequat. Phasellus sapien eros, lacinia quis ultrices vitae, mollis interdum dui. Aliquam est felis, molestie placerat ultrices nec, aliquam sed ipsum. Donec dictum dictum consectetur. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus venenatis tellus nec augue consequat finibus. Mauris semper luctus tellus eget eleifend. </p>
+            <p>Ut nec augue suscipit, semper lectus in, sagittis libero. Praesent pellentesque lacus sit amet vulputate ullamcorper. Fusce at porta urna. Pellentesque ac dolor a justo dignissim sodales sit amet non velit. Nam a tempus diam. Aenean ac erat ac felis fermentum faucibus. Suspendisse nec varius orci, vel interdum orci. Morbi tincidunt lectus id mauris porttitor, vel auctor eros euismod. Nam accumsan luctus mi nec fringilla. </p>
+        </div>
+
+        <div class="col-7 col-xxl-7 mw-75" id="terminal">
+            <ul id="terminal-tabs" class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="tab-1" data-bs-toggle="tab" data-bs-target="#tab-1-content" type="button" role="tab" aria-controls="tab-1-content" aria-selected="true">Tab 1</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-2" data-bs-toggle="tab" data-bs-target="#tab-2-content" type="button" role="tab" aria-controls="tab-2-content" aria-selected="false">Tab 2</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-3" data-bs-toggle="tab" data-bs-target="#tab-3-content" type="button" role="tab" aria-controls="tab-3-content" aria-selected="false">Tab 3</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-4" data-bs-toggle="tab" data-bs-target="#tab-4-content" type="button" role="tab" aria-controls="tab-4-content" aria-selected="false">Tab 4</button>
+                </li>
+              </ul>
+              <div id="terminal-console" class="mh-100">
+                    <div class="tab-content" id="containerTabContent">
+                        <iframe class="tab-pane show active mw-100 mh-100" id="tab-1-content" role="tabpanel" aria-labelledby="tab-1" tabindex="0" src="http://localhost:8080"></iframe>
+                        <iframe class="tab-pane" id="tab-2-content" role="tabpanel" aria-labelledby="tab-2" tabindex="0" src="http://localhost:8082"></iframe>
+                        <iframe class="tab-pane" id="tab-3-content" role="tabpanel" aria-labelledby="tab-3" tabindex="0" src=""></iframe>
+                        <iframe class="tab-pane" id="tab-4-content" role="tabpanel" aria-labelledby="tab-4" tabindex="0" src=""></iframe>
+                    </div>
+              </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+ 
+
+
+
+{% block footer %}
+
+<script>
+    var term = new Terminal();
+    term.open(document.getElementById('tab-1-content'));
+
+
+</script>
+{% endblock %}

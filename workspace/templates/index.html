@@ -1,9 +1,0 @@
-{% if modules_list %}
-    <ul>
-    {% for module_item in modules_list %}
-        <li><a href="{% url 'workspace:overview' module_item.module_url_title %}">{{ module_item.title }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p> No modules available</p>
-{% endif %}

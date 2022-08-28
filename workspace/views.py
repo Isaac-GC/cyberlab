@@ -6,7 +6,7 @@ from .models import LabModule,LabTask
 def index(request):
     module_list = LabModule.objects.order_by('title')
     context = { 'modules_list' : module_list }
-    return render(request, 'index.html', context)
+    return render(request, 'workspace.html', context)
 
 def module_details(request, module_url_title):
     all_modules = LabModule.objects.all()

@@ -1,4 +1,3 @@
-from turtle import mode
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -8,7 +7,7 @@ class LabModule(models.Model):
 
     def __str__(self):
         return self.title
-        
+
     @property
     def module_url_title(self):
         return self.title.replace(" ", "-").lower()
