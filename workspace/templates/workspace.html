@@ -32,7 +32,6 @@
             font-size: 40px;
         }
 </style>
-    </style>
 {% endblock %}
 
 {% block content %}
@@ -60,6 +59,7 @@
         <a href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="float-right material-icons material-symbols-outlined md-36">account_circle</span></a>
         <ul class="dropdown-menu dropdown-menu-end">
             <li><h4 class="dropdown-header">John Doe</h5></li>
+            <li><a class="dropdown-item" href="#">Home</a></li>
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
@@ -77,8 +77,12 @@
         </div>
         <div class="offcanvas-body d-grid gap-0">
             <!-- <label><input id="lightSwitch" type="checkbox">Toggle Dark Mode</label> -->
+            <a class="dropdown-item gap-1 mt-1" href="{% url 'landing:home' %}">Home</a>
+            <a class="dropdown-item gap-1 mt-1" href="#">Settings</a>
+            <a class="dropdown-item gap-1 mt-1" href="#">Profile</a>
+            <hr>
             <div>
-                <label for="changeModuleSelect" class="form-label text-dark"><b>Change Lab Module</b></label>
+                <label for="changeModuleSelect" class="form-label text-dark"><b>Current Module</b></label>
                 <select id="changeModuleSelect" name="module" class="form-select">
                     <option value="volvo">Volvo</option>
                     <option value="saab">Saab</option>
@@ -94,9 +98,9 @@
                     Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </p>
             </div>
+            <hr>
             {% if modules_list %}
             <div class="table-responsive">
-            
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
@@ -166,73 +170,6 @@
 
 
 {% block footer %}
+<script src="{% static "js/darkmode.js" %}"></script>
 
-<script>
-    /**
-    var term = new Terminal();
-    term.open(document.getElementById('tab-1-content')); **/
-
-
-    (function () {
-        let lightSwitch = document.getElementById('lightSwitch');
-        if (!lightSwitch) {
-            return;
-        }
-
-        function toggleDarkMode(currentThemeMode) {
-            var oldTheme = 'dark';
-            var newTheme = 'light';
-            
-            if (currentThemeMode == 'dark') {
-                var oldTheme = 'light';
-                var newTheme = 'dark';
-            }
-
-            // var oldTheme_regex = new RegExp(oldTheme, "g");
-            // var newTheme_regex = new RegExp(newTheme, "g");
-
-            var current_lightitems = document.querySelectorAll("-light");
-            var current_darkitems = document.querySelectorAll("-dark");
-
-            current_lightitems.forEach(element => {
-                element.className = element.className.replace("-light", "-dark");
-            });
-
-            current_darkitems.forEach(element => {
-                element.className = element.className.replace("-dark", "-light");
-            });
-
-            localStorage.setItem('darkModeEnabled', newTheme);
-        }
-        
-        function getSystemDefaultTheme() {
-            const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)');
-            if (darkThemeMq.matches) {
-                return 'dark';
-            }
-                return 'light';
-        }
-
-        function onToggleMode() {
-            if (lightSwitch.checked) { 
-                toggleDarkMode("dark");
-             } else {
-                toggleDarkMode("light");
-             }
-        }
-
-        function setup() {
-            var settings = localStorage.getItem('darkModeEnabled');
-            if (settings == null) { settings = getSystemDefaultTheme(); }
-
-            if (settings == 'dark') { lightSwitch.checked = true; }
-
-            lightSwitch.addEventListener('change', onToggleMode);
-            onToggleMode();
-        }
-
-        setup();
-    })();
-
-</script>
 {% endblock %}
