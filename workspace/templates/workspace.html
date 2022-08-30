@@ -76,10 +76,14 @@
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body d-grid gap-0">
-            <!-- <label><input id="lightSwitch" type="checkbox">Toggle Dark Mode</label> -->
-            <a class="dropdown-item gap-1 mt-1" href="{% url 'landing:home' %}">Home</a>
-            <a class="dropdown-item gap-1 mt-1" href="#">Settings</a>
-            <a class="dropdown-item gap-1 mt-1" href="#">Profile</a>
+            <div class="card">
+                <div class="card-body">
+                    <!-- <label><input id="lightSwitch" type="checkbox">Toggle Dark Mode</label> -->
+                    <a class="dropdown-item gap-1 mt-1" href="{% url 'landing:home' %}">Home</a>
+                    <a class="dropdown-item gap-1 mt-1" href="{% url 'landing:settings' %}">Settings</a>
+                    <a class="dropdown-item gap-1 mt-1" href="#">Profile</a>
+                </div>
+            </div>
             <hr>
             <div>
                 <label for="changeModuleSelect" class="form-label text-dark"><b>Current Module</b></label>
