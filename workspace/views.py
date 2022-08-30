@@ -22,7 +22,7 @@ def module_details(request, module_url_title):
          'module_details' : module_details,
          'lab_tasks' : all_tasks
           }
-    return render(request, 'module_details.html', context)
+    return render(request, 'workspace.html', context)
 
 def module_overview(request, module_url_title):
     return HttpResponse(f"Looking at {module_url_title}")
