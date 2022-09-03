@@ -13,8 +13,14 @@ class LabModule(models.Model):
         return self.title.replace(" ", "-").lower()
 
 class LabTask(models.Model):
+<<<<<<< HEAD
     task_name = models.CharField(max_length=100)
     lab_module = models.ForeignKey(LabModule, on_delete=models.CASCADE)
+=======
+    task_name    = models.CharField(max_length=100)
+    task_details = models.CharField(max_length=10000)
+    lab_module   = models.ForeignKey(LabModule, on_delete=models.CASCADE)
+>>>>>>> 3889a48 (Saving progress)
 
 
     class TaskStatus(models.TextChoices):
@@ -29,4 +35,16 @@ class LabTask(models.Model):
     )
 
     def __str__(self):
+<<<<<<< HEAD
         return self.task_name
+=======
+        return self.task_name
+
+    @property
+    def task_url_title(self):
+        return self.task_name.replace(" ", "-").lower()
+
+    @property
+    def task_status_name(self):
+        return self.TaskStatus(self.task_status).label
+>>>>>>> 3889a48 (Saving progress)
