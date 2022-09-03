@@ -23,9 +23,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('landing/', include('landing.urls')),
-    path('workspace/', include('workspace.urls')),
-<<<<<<< HEAD
+    path('workspace/', include('workspace.urls')),s
 ]
-=======
-]
->>>>>>> 3889a48 (Saving progress)
