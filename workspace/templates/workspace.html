@@ -37,24 +37,24 @@
 {% block nav_content %}
     <hr>
     <div>
+        {% if all_modules %}
         <label for="changeModuleSelect" class="form-label text-dark"><b>Current Module</b></label>
         <select id="changeModuleSelect" name="module" class="form-select">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option selected value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+            {% for module_item in all_modules %}
+                {% if request_path == module_item.module_url_title %}
+                    <option selected value="{% url 'workspace:overview' module_item.module_url_title 0 %}">{{ module_item.title }}</option> 
+                {% else %}
+                    <option value="{% url 'workspace:overview' module_item.module_url_title 0 %}">{{ module_item.title }}</option>
+                {% endif %}
+            {% endfor %}
         </select>
-        <p class="mt-1 text-dark">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown 
-            printer took a galley of type and scrambled it to make a type specimen book. It has survived 
-            not only five centuries, but also the leap into electronic typesetting, remaining essentially 
-            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing 
-            Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
+        <p class="mt-1 text-dark">{{ module_details.description }}</p>
+        {% else %}
+            <p>No modules found</p>
+        {% endif %}
     </div>
     <hr>
-    {% if modules_list %}
+    {% if lab_tasks %}
     <div class="table-responsive">
         <table class="table table-hover">
             <thead class="table-light">
@@ -63,13 +63,11 @@
                     <th scope="col" class="sticky-table-header text-center text-dark">Status</th>
                 </tr>
             </thead>
-            <tbody>
-            {% for module_item in modules_list %}
-                <tr>
-                    <td class="text-center">
-                        <a href="{% url 'workspace:overview' module_item.module_url_title %}" class="text-dark">{{ module_item.title }} | Task Details</a>
-                    </td>
-                    <td class="text-center">Not Done</td>
+            <tbody id="task-list-items">
+            {% for task in lab_tasks %}
+                <tr onclick="window.location.pathname = {% url 'workspace:overview' module_details.module_url_title task.id %}">
+                    <td class="text-center">{{ task.task_name }}</td>
+                    <td class="text-center">{{ task.task_status_name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -84,16 +82,15 @@
 {% block content %}
 
 <div class="container container-xl container-xxl min-vw-100">
+    {% if task_info %}
     <div class="row align-self-start mt-2 gx-2">
         <div class="col-5 col-xxl-5" id="description">
-            <h4 class="text-dark">Task Name</h4>
-            <p class="text-dark"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed metus vitae diam bibendum dignissim. Aenean eu varius dolor. Integer arcu est, vestibulum ut nulla nec, elementum accumsan nibh. Suspendisse vitae erat neque. Mauris suscipit, neque in bibendum tempus, lectus augue mattis lorem, nec fringilla purus magna et ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras convallis odio eu pretium facilisis. Morbi nec hendrerit arcu. Cras eu sapien dolor. Vivamus iaculis lobortis pellentesque. Nulla ultrices nisi sed leo varius, et fermentum arcu accumsan. Nam sagittis, tellus id faucibus euismod, est dui faucibus magna, ut placerat leo purus non lorem. Donec porttitor nulla vel magna elementum pharetra. </p>
-            <p class="text-dark"> In hac habitasse platea dictumst. In semper nisi augue, non vulputate dolor pretium eu. Suspendisse potenti. Vestibulum maximus mattis justo, quis malesuada massa luctus nec. Nullam at convallis lectus, vel volutpat nibh. Pellentesque faucibus nibh arcu, at congue erat efficitur ac. Cras porta risus eu faucibus mattis. Vestibulum nisi ligula, placerat non consectetur sed, egestas nec nisl. Curabitur nec lectus ullamcorper, venenatis ligula ut, iaculis ex. Nam quam purus, facilisis non ipsum a, malesuada auctor elit. Cras lacus nibh, venenatis quis nibh in, rhoncus egestas lorem. Donec vestibulum cursus leo vitae luctus. In mauris nisl, porta at massa id, euismod euismod turpis. Aenean in eleifend magna, sed vulputate tortor. Cras quis ex vitae elit ullamcorper sagittis a id eros. Quisque ac ipsum quis tortor hendrerit iaculis vitae at arcu.</p>
-            <p class="text-dark">Vestibulum sed vehicula dui. Praesent turpis enim, luctus ac sollicitudin eu, vulputate ut risus. Nulla eget elit nulla. Sed et sem ac purus sodales placerat. Nunc et sollicitudin eros, auctor malesuada mauris. Fusce molestie felis ligula, et lacinia nisl maximus sit amet. Donec vel consectetur tellus, a fermentum dui. Vivamus iaculis, metus efficitur tincidunt euismod, diam massa fermentum purus, quis dignissim arcu dolor sed dui. Nam laoreet tortor ac odio pharetra, vel scelerisque urna pulvinar. Nulla aliquet iaculis sem hendrerit bibendum. In imperdiet fringilla massa eu molestie. </p>
-            <p class="text-dark">Sed tincidunt placerat lectus, et bibendum eros varius id. Integer ut odio sit amet odio maximus consequat. Phasellus sapien eros, lacinia quis ultrices vitae, mollis interdum dui. Aliquam est felis, molestie placerat ultrices nec, aliquam sed ipsum. Donec dictum dictum consectetur. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus venenatis tellus nec augue consequat finibus. Mauris semper luctus tellus eget eleifend. </p>
-            <p class="text-dark">Ut nec augue suscipit, semper lectus in, sagittis libero. Praesent pellentesque lacus sit amet vulputate ullamcorper. Fusce at porta urna. Pellentesque ac dolor a justo dignissim sodales sit amet non velit. Nam a tempus diam. Aenean ac erat ac felis fermentum faucibus. Suspendisse nec varius orci, vel interdum orci. Morbi tincidunt lectus id mauris porttitor, vel auctor eros euismod. Nam accumsan luctus mi nec fringilla. </p>
+            <h4 class="text-dark">{{ task_info.task_name }}</h4>
+            <div>{{ task_info.task_details }}</div>
         </div>
-
+    {% else %}
+        <p>No Task is selected</p>
+    {% endif %}
         <div class="col-7 col-xxl-7 mw-75" id="terminal">
             <ul id="terminal-tabs" class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -128,5 +125,5 @@
 
 {% block footer %}
 <script src="{% static "js/darkmode.js" %}"></script>
-
+<script src="{% static "js/tasks.js" %}"></script>
 {% endblock %}

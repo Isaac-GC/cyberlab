@@ -24,4 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('landing/', include('landing.urls')),
     path('workspace/', include('workspace.urls')),
+<<<<<<< HEAD
 ]
+=======
+]
+>>>>>>> 3889a48 (Saving progress)
