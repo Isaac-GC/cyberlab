@@ -1,7 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import viewsets, permissions, status
+
+from workspace.serializers import UserSerializer, LabTaskSerializer
 
 from .models import LabModule,LabTask
 
@@ -29,7 +36,7 @@ def module_details(request, module_url_title, task_id):
 
 
     current_task = 0
-    if task_id is not 0:
+    if task_id != 0:
         current_task = LabTask.objects.filter(id=task_id)
 
 
@@ -42,6 +49,37 @@ def module_details(request, module_url_title, task_id):
           }
     return render(request, 'workspace.html', context)
 
-@login_required
-def module_overview(request, module_url_title):
-    return HttpResponse(f"Looking at {module_url_title}")
+
+@api_view(['GET'])
+def task_list(request):
+    
+    if request.method == 'GET':
+        tasks = LabTask.objects.all()
+        serializer = LabTaskSerializer(tasks, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+@api_view(['GET'])
+def task_detail(request, pk):
+    
+    try:
+        task = LabTask.objects.get(pk=pk)
+    except LabTask.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = LabTaskSerializer(task)
+        return JsonResponse(serializer.data)
+
+
+
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+# @login_required
+# def module_overview(request, module_url_title):
+#     return HttpResponse(f"Looking at {module_url_title}")

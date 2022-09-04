@@ -13,21 +13,16 @@ class LabModule(models.Model):
         return self.title.replace(" ", "-").lower()
 
 class LabTask(models.Model):
-<<<<<<< HEAD
-<<<<<<< HEAD
-    task_name = models.CharField(max_length=100)
-    lab_module = models.ForeignKey(LabModule, on_delete=models.CASCADE)
-=======
     task_name    = models.CharField(max_length=100)
     task_details = models.CharField(max_length=10000)
     lab_module   = models.ForeignKey(LabModule, on_delete=models.CASCADE)
->>>>>>> 3889a48 (Saving progress)
-=======
-    task_name    = models.CharField(max_length=100)
-    task_details = models.CharField(max_length=10000)
-    lab_module   = models.ForeignKey(LabModule, on_delete=models.CASCADE)
->>>>>>> 3889a48 (Saving progress)
-
+    uses_vm      = models.BooleanField()
+    uses_md      = models.BooleanField()
+    terminal1    = models.CharField(max_length=50)
+    terminal2    = models.CharField(max_length=50)
+    terminal3    = models.CharField(max_length=50)
+    terminal4    = models.CharField(max_length=50)
+    custom_text  = models.CharField(max_length=10000)
 
     class TaskStatus(models.TextChoices):
         NOT_DONE = 'ND', _('Not Done')
@@ -41,12 +36,6 @@ class LabTask(models.Model):
     )
 
     def __str__(self):
-<<<<<<< HEAD
-<<<<<<< HEAD
-        return self.task_name
-=======
-=======
->>>>>>> 3889a48 (Saving progress)
         return self.task_name
 
     @property
@@ -55,9 +44,4 @@ class LabTask(models.Model):
 
     @property
     def task_status_name(self):
-<<<<<<< HEAD
         return self.TaskStatus(self.task_status).label
->>>>>>> 3889a48 (Saving progress)
-=======
-        return self.TaskStatus(self.task_status).label
->>>>>>> 3889a48 (Saving progress)

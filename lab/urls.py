@@ -18,10 +18,13 @@ from django.urls import path, include
 
 from django.views.generic import RedirectView
 
+from workspace import views as w_views
+
+
 urlpatterns = [
     # path('', RedirectView.as_view(url='/accounts/login', permanent=True)),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('landing/', include('landing.urls')),
-    path('workspace/', include('workspace.urls')),s
+    path('workspace/', include('workspace.urls')),
 ]

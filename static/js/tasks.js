@@ -8,5 +8,5 @@ moduleSelect.onchange = function() {
 
 
 function openLabTaskModule() {
-    
+    const xhttp = new XMLHttpRequest();
 }
