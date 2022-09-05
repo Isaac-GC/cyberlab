@@ -11,5 +11,5 @@ export default function Copyright() {
       </MuiLink>{' '}
       {new Date().getFullYear()}.
     </Typography>
-  );
+  )
 }

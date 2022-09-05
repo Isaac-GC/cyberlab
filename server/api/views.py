@@ -7,8 +7,8 @@ from . import serializers
 
 
 class Profile(generics.RetrieveAPIView):
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     serializer_class   = serializers.User
 
     def get_object(self):
-        return super.request.user
+        return self.request.user

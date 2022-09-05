@@ -44,6 +44,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -165,3 +168,5 @@ SIMPLE_JWT = {
 }
 
 JWT_COOKIE_NAME = env.str("JWT_COOKIE_NAME", default="refresh_token")
+JWT_COOKIE_SECURE = env.bool("JWT_COOKIE_SECURE", default=False)
+JWT_COOKIE_SAMESITE = env.str("JWT_COOKIE_SAMESITE", default="Lax")

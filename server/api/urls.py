@@ -13,5 +13,6 @@ urlpatterns = [
     path('token/', jwt_views.Login.as_view(), name='token'),
     path('token/refresh/', jwt_views.RefreshToken.as_view(), name='token_refresh'),
     path('token/logout/', jwt_views.Logout.as_view(), name='logout'),
+    path("api-auth/", include('rest_framework.urls')),
     # path('admin/', admin.site.urls),
 ]

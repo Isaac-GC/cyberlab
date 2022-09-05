@@ -8,4 +8,4 @@ const HomePage = (): React.ReactElement => {
     )
 }
 
-export default HomePage;
+export default HomePage

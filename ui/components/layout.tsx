@@ -1,17 +1,16 @@
 import Header from "./header"
 import Footer from "./footer"
-import type { Children } from "react"
 
-interface Props {
-    children: React.ReactNode
-}
 
-export default function Layout({ children }: Props) {
+const Layout = ({ children }): React.ReactElement => {
     return (
         <>
             <Header />
                 <main>{children}</main>
             <Footer />
         </>
+
     )
 }
+
+export default Layout

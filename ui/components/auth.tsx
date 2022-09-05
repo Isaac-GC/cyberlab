@@ -39,7 +39,7 @@ const fetchToken = (username: string, password: string): Promise<Response> => {
 };
 
 const fetchNewToken = (): Promise<Response> => {
-    const url = makeUrl("/token/refresh");
+    const url = makeUrl("/token/refresh/");
     
     return fetch(url, {
         method: "POST",
@@ -52,7 +52,7 @@ const fetchNewToken = (): Promise<Response> => {
 
 
 async function fetchUser(token: string): Promise<Response> {
-    const url = makeUrl("/user/");
+    const url = makeUrl("/me/");
 
     return fetch(url, {
         method: "GET",
@@ -76,7 +76,7 @@ interface AuthProviderProps {
     children: React.ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps): React.ReactNode => {
+export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElement => {
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<User | null>(null);
