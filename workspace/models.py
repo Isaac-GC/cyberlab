@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 class LabModule(models.Model):
     title = models.CharField(max_length=100)
@@ -24,6 +25,18 @@ class LabTask(models.Model):
     terminal4    = models.CharField(max_length=50)
     custom_text  = models.CharField(max_length=10000)
 
+    def __str__(self):
+        return self.task_name
+
+    @property
+    def task_url_title(self):
+        return self.task_name.replace(" ", "-").lower()
+
+
+class LabTaskStatus(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    task_id = models.ForeignKey(LabTask, on_delete=models.CASCADE)
+
     class TaskStatus(models.TextChoices):
         NOT_DONE = 'ND', _('Not Done')
         FAILURE  = 'F', _('Failure')
@@ -34,13 +47,6 @@ class LabTask(models.Model):
         choices=TaskStatus.choices,
         default=TaskStatus.NOT_DONE,
     )
-
-    def __str__(self):
-        return self.task_name
-
-    @property
-    def task_url_title(self):
-        return self.task_name.replace(" ", "-").lower()
 
     @property
     def task_status_name(self):

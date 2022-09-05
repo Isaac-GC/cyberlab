@@ -8,9 +8,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, status
 
-from workspace.serializers import UserSerializer, LabTaskSerializer
+from workspace.serializers import UserSerializer, LabTaskSerializer, LabTaskStatusSerializer
 
-from .models import LabModule,LabTask
+from .models import LabModule, LabTask, LabTaskStatus
 
 @login_required
 def index(request):
@@ -77,7 +77,17 @@ def task_detail(request, pk):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class LabTaskViewSet(viewsets.ModelViewSet):
+    queryset = LabTask.objects.all()
+    serializer_class = LabTaskSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class LabTaskStatusViewSet(viewsets.ModelViewSet):
+    queryset = LabTaskStatus.objects.all()
+    serializer_class = LabTaskStatus
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 # @login_required

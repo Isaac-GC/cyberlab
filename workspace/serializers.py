@@ -6,7 +6,7 @@ from . import models
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email']
+        fields = ['id', 'username', 'email', 'groups']
 
 
 
@@ -24,4 +24,13 @@ class LabTaskSerializer(serializers.ModelSerializer):
             'terminal3',
             'terminal4',
             'custom_text',
+            ]
+
+class LabTaskStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.LabTask
+        fields = [
+            'id',
+            'task_id',
+            'task_status_name'
             ]
