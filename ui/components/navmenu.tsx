@@ -1,19 +1,19 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Login from '@mui/icons-material/Login';
 import SvgIcon from '@mui/material/SvgIcon';
-
+import AccountBox from '@mui/icons-material/AccountBox';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ScienceIcon from '@mui/icons-material/Science';
+import Avatar from '@mui/material/Avatar';
 
 import { useAuth } from "./auth";
 import Link from "next/link";
@@ -22,7 +22,10 @@ import Link from "next/link";
 
 const NavMenu = (): React.ReactElement => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [selected, setSelected] = React.useState<-1 | HTMLElement>(-1);
+
     const open = Boolean(anchorEl);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -33,39 +36,77 @@ const NavMenu = (): React.ReactElement => {
 
     interface ICustomMenuItem {
         text: string;
+        icon: typeof SvgIcon;
         url: string;
     }
 
     const { isAuthenticated } = useAuth();
-    let menuMap = new Map<string, menuItem>();
+    
+    let profile: ICustomMenuItem  = { text: "Profile", icon: AccountBox, url: "/me" }
+    let settings: ICustomMenuItem = { text: "Settings", icon: Settings, url: "/settings" }
+    let logout: ICustomMenuItem = { text: "Logout", icon: Logout, url: "/logout" }
+    let login: ICustomMenuItem = { text: "Login", icon: Login, url: "/login" }
+    let modules: ICustomMenuItem = { text: "Modules", icon: ViewModuleIcon, url: "/modules" }
+    let labs: ICustomMenuItem = { text: "Labs", icon: ScienceIcon, url: "/labs" }
+
+    const authdMenu = [profile, settings, logout];
+    const unAuthdMenu = [login];
+    const authdMenuItems = [modules, labs];
+
+    let menuOptions: Array<ICustomMenuItem>;
+
+    let optionalMenuOptions: Array<ICustomMenuItem> = [];
 
     if (isAuthenticated) {
-
-        menuMap.set("profile", {text: "My Profile", url: "/me"}),
-        menuMap.set("settings", {text: "Settings", url: "/settings"}),
-        menuMap.set("logout", {text: "Logout", url: "/logout"})
+         menuOptions = authdMenu;
+         optionalMenuOptions = authdMenuItems;
     } else {
-        menuMap.set("login", {text: "Logout", url: "/login"})
+         menuOptions = unAuthdMenu;
     }
-
 
     return (
         <div>
-            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Typography sx={{ minWidth: 100 }}>Contact</Typography>
-                <Typography sx={{ minWidth: 100 }}>Profile</Typography>
-                <Tooltip title="Account settings">
-                <IconButton
-                    onClick={handleClick}
-                    size="small"
-                    sx={{ ml: 2 }}
-                    aria-controls={open ? 'account-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                >
-                    <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-                </IconButton>
-                </Tooltip>
+            <Box sx={{
+                display: 'flex', 
+                alignItems: 'center',
+                textAlign: 'center',
+                alignContent: 'center',
+                justifyContent: 'flex-end',
+                m: 0.5
+                }}>
+                {optionalMenuOptions.map(({text, icon, url}, index) => (
+                    <MenuItem key={index}>
+                        <Link href={url}>
+                            <Typography sx={{ minWidth: 100 }}>
+                                {text}
+                            </Typography>
+                        </Link>
+                    </MenuItem>
+                ))}
+                { isAuthenticated ? (
+                    <Tooltip title="Account settings">
+                        <IconButton
+                            onClick={handleClick}
+                            size="small"
+                            sx={{ ml: 2 }}
+                            aria-controls={open ? 'account-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                        >
+                            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                        </IconButton>
+                    </Tooltip>
+                ) : 
+                (
+                    <MenuItem>
+                        <Link href={login.url}>
+                            <Typography sx={{ minWidth: 100 }}>
+                                {login.text}
+                            </Typography>
+                        </Link>
+                    </MenuItem>
+                )
+                }
             </Box>
             <Menu
                 anchorEl={anchorEl}
@@ -102,13 +143,15 @@ const NavMenu = (): React.ReactElement => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                {menuMap.forEach((item: menuItem) => (
-                    <MenuItem
-                    component={Link}
-                    to={item.url}
-                    >{item.text}</MenuItem>
-                ))
-                }
+                { menuOptions.map(({text, icon, url}, index) => (
+                    <MenuItem key={index}>
+                        <Link href={url}>
+                            <Typography variant="inherit" color="text.secondary">
+                                {text}
+                            </Typography>
+                        </Link>
+                    </MenuItem> 
+                    ))} 
             </Menu>
         </div>
     );

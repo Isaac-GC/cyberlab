@@ -5,9 +5,9 @@ import Copyright from "./copyright"
 
 export default function Footer() {
   return (
-    <footer className={styles.footer}>
-        <hr />
-        <Copyright />
-    </footer>
+      <footer className={styles.footer_content} >
+          <hr />
+          <Copyright />
+      </footer>
   )
 }

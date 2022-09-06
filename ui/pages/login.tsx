@@ -1,8 +1,17 @@
 import { useState } from "react";
+import * as React from 'react';
 import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout";
 import { useAuth } from "../components/auth";
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 
 const loginApi = async (username: string, password: string): Promise<void> => {
     const resp = await fetch("/api/login", {
@@ -17,11 +26,28 @@ const loginApi = async (username: string, password: string): Promise<void> => {
     Router.push("/me");
 };
 
+const ariaLabel = { 'aria-label': 'description' };
+
 const Login = (): React.ReactElement => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const { loading, isAuthenticated, login} = useAuth();
+
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    }));
+
+    const ButtonItem = styled(Paper)(({ theme }) => ({
+        ...theme.typography.body2,
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    }));
 
     const handleSubmit = async (
         event: React.FormEvent<HTMLFormElement>
@@ -43,83 +69,56 @@ const Login = (): React.ReactElement => {
 
     return (
         <Layout>
-          <form className="w-full max-w-sm pt-4" onSubmit={handleSubmit}>
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3">
-                <label
-                  className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                  htmlFor="username"
-                >
-                  Username
-                </label>
-              </div>
-              <div className="md:w-2/3">
-                <input
-                  type="text"
-                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="username"
-                  name="username"
-                  value={username}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            <Box sx={{ 
+                display: 'flex',
+                alignContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column'
+                }}>
+                <Typography component="h1" variant="h5">Sign In</Typography>
+                <Box component="form" onSubmit={handleSubmit} noValidate 
+                sx={{ mt: 1 }}>
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    autoComplete="username"
+                    autoFocus
+                    variant="standard"
+                    value={username}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
                     setUsername(e.target.value)
-                  }
+                    }
                 />
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3">
-                <label
-                  className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                  htmlFor="password"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="md:w-2/3">
-                <input
-                  type="password"
-                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    variant="standard"
+                    value={password}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
                     setPassword(e.target.value)
-                  }
+                    }
                 />
-              </div>
-            </div>
-            <div className="md:flex md:items-center">
-              <div className="md:w-1/3"></div>
-              <div className="md:w-2/3">
-                <button
-                  className="shadow bg-teal-500 hover:bg-teal-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                  type="submit"
-                >
-                  Login
-                </button>
-              </div>
-            </div>
-            {errorMessage ? (
-              <div className="md:flex md:items-center">
-                <div className="md:w-1/3"></div>
-                <div className="md:w-2/3 pt-4">
-                  <p className="text-red-400">Error: {errorMessage}</p>
-                </div>
-              </div>
-            ) : null}
-            <div className="md:flex md:items-center">
-              <div className="md:w-1/3"></div>
-              <div className="md:w-2/3 pt-4">
-                <p className="text-gray-700">
-                  No account?{" "}
-                  <Link href="/signup">
-                    <a>Sign up</a>
-                  </Link>
-                  .
-                </p>
-              </div>
-            </div>
-          </form>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="outlined"
+                    sx={{ mt: 3, mb: 2 }}
+                    >
+                    Sign In
+                </Button>
+                    
+                </Box>
+            </Box>    
         </Layout>
     );
 };

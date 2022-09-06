@@ -1,5 +1,13 @@
+.footer_content {
+  margin-top: 70vh;
+  bottom: 0;
+}
+
 .footer {
-  margin-top: 2rem;
+  margin-top: 0;
+  margin-bottom: -10px;
+  padding-bottom: 5px;
+  height: 20px;
 }
 
 /* .navItems {
