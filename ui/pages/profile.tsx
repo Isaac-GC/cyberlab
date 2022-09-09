@@ -1,7 +1,7 @@
 import Layout from "../components/layout";
 import { useAuth } from "../components/auth";
 
-const Me = (): React.ReactElement => {
+const Profile = (): React.ReactElement => {
     const { loading, user } = useAuth();
 
     if (loading) {
@@ -25,4 +25,4 @@ const Me = (): React.ReactElement => {
     }
 }
 
-export default Me;
+export default Profile;

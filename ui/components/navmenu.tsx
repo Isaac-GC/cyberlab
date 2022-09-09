@@ -42,7 +42,7 @@ const NavMenu = (): React.ReactElement => {
 
     const { isAuthenticated } = useAuth();
     
-    let profile: ICustomMenuItem  = { text: "Profile", icon: AccountBox, url: "/me" }
+    let profile: ICustomMenuItem  = { text: "Profile", icon: AccountBox, url: "/profile" }
     let settings: ICustomMenuItem = { text: "Settings", icon: Settings, url: "/settings" }
     let logout: ICustomMenuItem = { text: "Logout", icon: Logout, url: "/logout" }
     let login: ICustomMenuItem = { text: "Login", icon: Login, url: "/login" }

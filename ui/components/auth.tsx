@@ -52,7 +52,7 @@ const fetchNewToken = (): Promise<Response> => {
 
 
 async function fetchUser(token: string): Promise<Response> {
-    const url = makeUrl("/me/");
+    const url = makeUrl("/profile/");
 
     return fetch(url, {
         method: "GET",
