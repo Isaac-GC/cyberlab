@@ -14,7 +14,8 @@ class App(cmd2.Cmd):
 
 
 
-
+    def do_rot13(self, args):
+        word = []
 
 
 
