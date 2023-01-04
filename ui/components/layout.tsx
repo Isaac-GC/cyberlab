@@ -8,8 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Container from '@mui/material/Container';
 
 
-
-const Layout = ({ children }): React.ReactElement => {
+const Layout = ({ children, ...props }: any ): React.ReactElement => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
     const theme = React.useMemo(
@@ -29,7 +28,7 @@ const Layout = ({ children }): React.ReactElement => {
                     <Container maxWidth="lg" component="main">
                         <main>{children}</main>
                     </Container>
-                <Footer />
+                {/* <Footer /> */}
             </ThemeProvider>
         </>
 

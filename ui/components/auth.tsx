@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         if(accessToken === "") {
             return false;
         }
-        const expiry = new Date(accessTokenExpiry);
+        const expiry = new Date(accessTokenExpiry!);
         console.log("Checking token expiry: ", expiry);
         return expiry.getTime() > Date.now();
     };
@@ -101,6 +101,9 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
     const initAuth = async (): Promise<void> => {
         setLoading(true);
         if (!accessTokenValid()) {
+            if (accessToken == '' || accessTokenExpiry == null) {
+                return;
+            }
             console.log("Invalid access token. Trying to refetch the token...");
             await refreshToken();
         } else {
@@ -110,8 +113,8 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
     };
 
     useEffect(() => {
-        initAuth();
-    }, []);
+        initAuth()
+    }, [initAuth]);
 
     const initUser = async (token: string): Promise<void> => {
         const resp = await fetchUser(token);
@@ -124,7 +127,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         const resp = await fetchNewToken();
         if (!resp.ok) {
             setNotAuthenticated();
-            return;
+            return '';
         }
         const tokenData = await resp.json();
         handleNewToken(tokenData);

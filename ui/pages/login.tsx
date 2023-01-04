@@ -59,7 +59,7 @@ const Login = (): React.ReactElement => {
             if (resp.status === 401) {
                 setErrorMessage("Invalid login credentials");
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             setErrorMessage(error.message);
         }

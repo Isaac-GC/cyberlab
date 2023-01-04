@@ -77,7 +77,7 @@ const NavMenu = (): React.ReactElement => {
                 {optionalMenuOptions.map(({text, icon, url}, index) => (
                     <MenuItem key={index}>
                         <Link href={url}>
-                            <Typography sx={{ minWidth: 100 }}>
+                            <Typography sx={{ minWidth: 100}} variant="inherit" color="text.secondary"  >
                                 {text}
                             </Typography>
                         </Link>
