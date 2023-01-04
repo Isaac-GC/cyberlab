@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active",
             "date_joined",
             "last_login",
+            "group",
         )
 
 
