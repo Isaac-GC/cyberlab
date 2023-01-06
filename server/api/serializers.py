@@ -13,11 +13,13 @@ class User(serializers.ModelSerializer):
         fields = (
             "id",
             "username",
-            "name",
+            "first_name",
+            "last_name"
             "email",
             "is_active",
             "date_joined",
             "last_login",
+            "is_admin"
         )
 
 
@@ -26,7 +28,7 @@ class TokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token['name'] = user.name
+        token['username'] = user.username
         return token
 
     def validate(self, attrs):

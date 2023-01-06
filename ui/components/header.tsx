@@ -10,9 +10,6 @@ const Header = (): React.ReactElement => {
 
     return (
         <header>
-            {/* <noscript>
-                <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
-            </noscript> */}
             <NavMenu />
         </header>
 

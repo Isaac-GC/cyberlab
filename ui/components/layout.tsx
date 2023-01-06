@@ -25,7 +25,7 @@ const Layout = ({ children, ...props }: any ): React.ReactElement => {
             <ThemeProvider  theme={theme}>
                 <CssBaseline />
                 <Header />
-                    <Container maxWidth="lg" component="main">
+                    <Container maxWidth={false} component="main">
                         <main>{children}</main>
                     </Container>
                 {/* <Footer /> */}

@@ -23,7 +23,7 @@ const loginApi = async (username: string, password: string): Promise<void> => {
     if (resp.status != 200) {
         throw new Error(await resp.text());
     }
-    Router.push("/me");
+    Router.push("/");
 };
 
 const ariaLabel = { 'aria-label': 'description' };

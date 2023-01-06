@@ -24,3 +24,6 @@ For 'Prod' environments:
 1. Navigate to `./server`
 
 ### Notes
+
+#### TODO
+- Need to write a custom SQL script or python script to initialize the `api_user` table and columns

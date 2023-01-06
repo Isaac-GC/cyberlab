@@ -43,6 +43,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console'],
+#         'level': 'DEBUG',
+#     },
+# }
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
@@ -163,7 +176,7 @@ REST_FRAMEWORK = {
 
 # JWT Settings
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME" : timedelta(minutes=1),
+    "ACCESS_TOKEN_LIFETIME" : timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME" : timedelta(minutes=30),
 }
 

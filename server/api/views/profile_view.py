@@ -9,12 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "username",
-            "name",
+            "first_name",
+            "last_name",
             "email",
             "is_active",
-            "date_joined",
             "last_login",
-            "group",
+            "is_admin"
         )
 
 

@@ -12,8 +12,8 @@ const API_BASE = "http://localhost:8000/api"
 interface User {
     id: string;
     email: string;
-    name: string;
     username: string;
+    is_admin: number;
 }
 
 interface TokenResponse {

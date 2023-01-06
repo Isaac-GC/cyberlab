@@ -40,7 +40,7 @@ const NavMenu = (): React.ReactElement => {
         url: string;
     }
 
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     
     let profile: ICustomMenuItem  = { text: "Profile", icon: AccountBox, url: "/profile" }
     let settings: ICustomMenuItem = { text: "Settings", icon: Settings, url: "/settings" }
@@ -48,6 +48,7 @@ const NavMenu = (): React.ReactElement => {
     let login: ICustomMenuItem = { text: "Login", icon: Login, url: "/login" }
     let modules: ICustomMenuItem = { text: "Modules", icon: ViewModuleIcon, url: "/modules" }
     let labs: ICustomMenuItem = { text: "Labs", icon: ScienceIcon, url: "/labs" }
+    let admin: ICustomMenuItem = { text: "Admin", icon: ScienceIcon, url: "/admin" }
 
     const authdMenu = [profile, settings, logout];
     const unAuthdMenu = [login];
@@ -56,10 +57,15 @@ const NavMenu = (): React.ReactElement => {
     let menuOptions: Array<ICustomMenuItem>;
 
     let optionalMenuOptions: Array<ICustomMenuItem> = [];
-
     if (isAuthenticated) {
          menuOptions = authdMenu;
-         optionalMenuOptions = authdMenuItems;
+        if (user.is_admin == 1) {
+            optionalMenuOptions = [admin].concat(authdMenuItems);
+            console.log("isAdmin");
+        } else {
+            optionalMenuOptions = authdMenuItems;
+            console.log("isNotAdmin");
+        }
     } else {
          menuOptions = unAuthdMenu;
     }
