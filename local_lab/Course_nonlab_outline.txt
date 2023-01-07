@@ -1,0 +1,188 @@
+Why Cybersecurity 
+
+Who this class is for 
+
+Compare Security Roles and Security Controls 
+
+Information Security 
+
+CIA Triad 
+
+What the Security Operations Center Does 
+
+Incident Response 
+
+Explain Threat Actors and Threat Intelligence 
+
+Threat Actor Types 
+
+Attack Vectors 
+
+Perform Security Assessments 
+
+Identifies, assesses, and implements key security controls in applications 
+
+Identify Social Engineering and Malware 
+
+A manipulation technique that exploits human error to gain private information, access, or valuables 
+
+Software that causes harm to the network and organization 
+
+ 
+ 
+
+ 
+
+Summarize Basic Cryptographic Concepts 
+
+Implement Public Key Infrastructure 
+
+Create, manage, use, save and revoke digital security certificates. 
+
+Certificate Authority (CA) 
+
+Registration Authority (RA) 
+
+Certificate Database 
+
+Certificate Store 
+
+Key Archival Server 
+
+Implement Authentication Controls 
+
+Credentials which, at a minimum, consist of a user ID and password. 
+
+File permissions, such as the right to create, read, edit or delete a file. 
+
+Program permissions, such as the right to execute a program. 
+
+Data permissions, such as the right to retrieve or update information in a database 
+
+Implement Identity and Account Management Controls 
+
+Role Based 
+
+Security Groups 
+
+Implement Secure Network Designs 
+
+Compartmentalization 
+
+Vulnerability Assessment 
+
+Weakest Link 
+
+Layering 
+
+Implement Network Security Appliances 
+
+Physical Firewalls 
+
+VPN 
+
+Intrusion Protection Systems 
+
+Unified Threat Management 
+
+Network Access Firewalls 
+
+Email Security Gateways 
+
+VPN Gateways 
+
+Network Device Backup and Recovery 
+
+Implement Secure Network Protocols 
+
+SSL 
+
+SFTP 
+
+HTTPS 
+
+Implement Host Security Solutions 
+
+Configuration of systems 
+
+Best Practices 
+
+Implement Secure Mobile Solutions 
+
+Discuss main solutions 
+
+IBM 
+
+Intune 
+
+Summarize Secure Application Concepts 
+
+Implement Secure Cloud Solutions 
+
+Explain Data Privacy and Protection Concepts 
+
+Define privacy and protection of data 
+
+Perform Incident Response 
+
+Identify 
+
+Contain 
+
+Eliminate 
+
+Explain Digital Forensics 
+
+identifying, acquiring, processing, analyzing, and reporting on data stored electronically 
+
+Summarize Risk Management Concepts 
+
+Process of identifying, assessing and controlling threats to an organization's capital and earnings. 
+
+Types of risk management 
+
+Principles of risk management 
+
+Ensure risks are identified early. ... 
+
+Factor in organizational goals and objectives. ... 
+
+Manage risk within context. ... 
+
+Involve stakeholders. ... 
+
+Ensure responsibilities and roles are clear. ... 
+
+Create a cycle of risk review. ... 
+
+Strive for continuous improvement 
+
+Implement Cybersecurity Resilience 
+
+System Hygiene. 
+
+Develop a plan. 
+
+Map out a risk profile. 
+
+Assess and measure. 
+
+Migrate risk. 
+
+Cyber insurance. 
+
+Get started 
+
+Explain Physical Security 
+
+limiting access to spaces where data is stored 
+
+Career next steps 
+
+Resumes 
+
+LinkedIn 
+
+Applying for jobs 
+
+ 

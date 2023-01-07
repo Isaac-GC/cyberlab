@@ -1,0 +1,70 @@
+Table of Contents
+0. (Prestarter)
+   a. - CIA Triad in practice
+      - AAA Triad in practice
+   b. Incident Response (Overview - not detailed)
+   c. Threat Actor types
+   d. Attack Vectors
+   e. Social Engineering and Malware (identifying - basic)
+
+1. Cryptography Concepts
+   a. ROT13
+   b. Caeser Cipher
+   c. Symmetric vs Asymmetric Encryption
+   		AES256 vs X.509
+   d. Salting Passwords
+
+2. Private Key Infrastructure
+   a. GPG Signatures (PGP too)
+   b. SSH Keys
+   c. Creating a personal PKI
+
+3. Implement Authentication Controls
+   a. Basic user creds per NIST 800-53
+   b. Implement File/Folder permissions in:
+      i. Linux
+      ii. Windows
+      iii. Windows Fileshares (NTFS with SMB/NFS)
+   c. Program Permissions
+      i. Linux
+      ii. Windows
+   d. Database permissions
+      i. PostgreSQL only 
+
+4. Implement IAM Controls
+   a. Role based (Linux and Windows)
+   b. Security Groups (Linux and Windows)
+
+5. Secure Network Architecture Designs
+    a. On-Premise
+      i. VLAN's
+      ii. Physical Separation
+    b. Vulnerability Assessments
+      i. Identifying Risks
+      ii. Softare/Hardware inventorying
+      iii. IT and OT
+    c. Weakest Link
+      i. Identifying at-risk elements
+    d. Layering
+      i. defense-in-depth
+      ii. Network Segregation/zoning
+
+6. Implement Secure Network Protocols
+    a. HTTP/S
+      i. SSL Types
+      ii. Fixing common misconfigurations
+    b. DNSSEC
+    c. SFTP/SCP
+
+7. Host Security Solutions
+   a. Minimum permissions and/or least-privilege
+   b. Implement App whitelisting (Applocker)
+   c. Antivirus/IDS(Windows/Linux)
+
+8. Incident Response
+   a. What happened and what are the procedures to start?
+   b. How to quarantine/react?
+   c. Performing forensics
+      i. do's and don'ts
+      ii. Creating system images
+   d. How to recover
