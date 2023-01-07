@@ -44,6 +44,7 @@ class UserChangeForm(forms.ModelForm):
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
+    model = user.User
 
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_admin')
     list_filter = ('is_admin',)

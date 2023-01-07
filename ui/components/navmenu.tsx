@@ -15,7 +15,7 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ScienceIcon from '@mui/icons-material/Science';
 import Avatar from '@mui/material/Avatar';
 
-import { useAuth } from "./auth";
+// import { useAuth } from "./auth";
 import Link from "next/link";
 
 
@@ -40,7 +40,7 @@ const NavMenu = (): React.ReactElement => {
         url: string;
     }
 
-    const { isAuthenticated, user } = useAuth();
+    // const { isAuthenticated, isAdmin, authorized, user } = useAuth();
     
     let profile: ICustomMenuItem  = { text: "Profile", icon: AccountBox, url: "/profile" }
     let settings: ICustomMenuItem = { text: "Settings", icon: Settings, url: "/settings" }
@@ -57,18 +57,21 @@ const NavMenu = (): React.ReactElement => {
     let menuOptions: Array<ICustomMenuItem>;
 
     let optionalMenuOptions: Array<ICustomMenuItem> = [];
-    if (isAuthenticated) {
+    // if (isAuthenticated) {
          menuOptions = authdMenu;
-        if (user.is_admin == 1) {
-            optionalMenuOptions = [admin].concat(authdMenuItems);
-            console.log("isAdmin");
-        } else {
+    //      console.log("Authenticated", isAuthenticated);
+    //      console.log("authorized", authorized);
+    //      console.log("Admin(b)", isAdmin);
+    //     if (isAdmin) {
+    //         optionalMenuOptions = [admin].concat(authdMenuItems);
+    //         console.log("isAdmin");
+    //     } else {
             optionalMenuOptions = authdMenuItems;
-            console.log("isNotAdmin");
-        }
-    } else {
-         menuOptions = unAuthdMenu;
-    }
+    //         console.log("isNotAdmin");
+    //     }
+    // } else {
+    //      menuOptions = unAuthdMenu;
+    // }
 
     return (
         <div>
@@ -89,7 +92,7 @@ const NavMenu = (): React.ReactElement => {
                         </Link>
                     </MenuItem>
                 ))}
-                { isAuthenticated ? (
+                {/* { isAuthenticated ? (
                     <Tooltip title="Account settings">
                         <IconButton
                             onClick={handleClick}
@@ -103,7 +106,7 @@ const NavMenu = (): React.ReactElement => {
                         </IconButton>
                     </Tooltip>
                 ) : 
-                (
+                ( */}
                     <MenuItem>
                         <Link href={login.url}>
                             <Typography sx={{ minWidth: 100 }}>
@@ -111,8 +114,8 @@ const NavMenu = (): React.ReactElement => {
                             </Typography>
                         </Link>
                     </MenuItem>
-                )
-                }
+                {/* )
+                } */}
             </Box>
             <Menu
                 anchorEl={anchorEl}

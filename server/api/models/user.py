@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
 from . import group
 
 class UserManager(BaseUserManager):
+
     def create_user(self, email, username, password=None):
         if not email:
             raise ValueError("Users must have an email address")
@@ -36,7 +37,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    username = models.CharField("Username", blank=True, unique=True, max_length=255)
+    username = models.CharField("Username", unique=True, max_length=255)
     first_name = models.CharField("First Name", blank=True, max_length=255)
     last_name = models.CharField("Last Name", blank=True, max_length=255)
     email = models.CharField("Email", unique=True, max_length=255)
@@ -47,7 +48,6 @@ class User(AbstractBaseUser):
     objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
-
 
     @property
     def is_staff(self):

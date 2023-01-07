@@ -90,11 +90,12 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
     const [user, setUser] = useState<User | null>(null);
     const [accessToken, setAccessToken] = useState<string>("");
     const [accessTokenExpiry, setAccessTokenExpiry] = useState<number | null>(null);
-    const [authorized, isAuthorized] = useState(false);
+    const [authorized, setIsAuthorized] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const setNotAuthenticated = (): void => {
         setIsAuthenticated(false);
+        setIsAuthorized(false);
         setLoading(false);
         setUser(null);
     }
@@ -118,6 +119,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
             await refreshToken();
         } else {
             setIsAuthenticated(true);
+            setIsAuthorized(true);
             setLoading(false);
         }
         if (user?.is_admin === 1) {
@@ -153,6 +155,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         const expiryInt = data.access_expires * 1000;
         setAccessTokenExpiry(expiryInt);
         setIsAuthenticated(true);
+        setIsAuthorized(true);
         setLoading(false);
     };
 
@@ -204,30 +207,40 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         const homePage  = '/';
         const currentPagePath = url.split('?')[0];
 
-        function returnToLoginPage() {
-            isAuthorized(false);
-            router.push({
-                pathname: loginPage,
-                query: { returnUrl: router.asPath }
-            });
-        }
+        // function returnToLoginPage() {
+        //     isAuthorized(false);
+        //     router.push({
+        //         pathname: loginPage,
+        //         query: { returnUrl: router.asPath }
+        //     });
+        // }
 
-        if (isAuthenticated) {
-            if (user === null) {
-                isAuthorized(false);
-                returnToLoginPage();
-            } else {
+        // if (isAuthenticated) {
+        //     console.log("authenticated")
+        //     if (user === null) {
+        //         isAuthorized(false);
+        //         console.log("Authenticated, but not authorized")
+        //         // returnToLoginPage();
+        //     } else {
+        //         // initAuth();
+        //     }
+        // } else {
+        //     setNotAuthenticated();
+        //     // returnToLoginPage();
+        //     console.log("Not authenticated");
+        // }
+
+        if (!authorized)  {
+            if (!loginPage.includes(currentPagePath) || !homePage.includes(currentPagePath)) {
+                // returnToLoginPage();
+                console.log(currentPagePath);
+                console.log("Not authorized");
+            } else if (isAuthenticated) {
                 initAuth();
             }
         } else {
-            setNotAuthenticated();
-            returnToLoginPage();
-        }
-
-        if (!isAuthorized) {
-            if (loginPage.includes(currentPagePath) || homePage.includes(currentPagePath)) {
-                returnToLoginPage();
-            }
+            setIsAuthenticated(true);
+            setIsAuthorized(true);
         }
     };
 
@@ -236,7 +249,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         
         routeCheck(router.asPath);
 
-        const hideContent = () => isAuthorized(false);
+        const hideContent = () => setIsAuthorized(false);
         router.events.on('routeChangeStart', hideContent);
         
         router.events.on('routeChangeComplete', routeCheck);
@@ -252,7 +265,8 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
     // Values that can be used in other component/page logic
     const value = {
         isAuthenticated,
-        isAuthorized,
+        authorized,
+        isAdmin,
         user,
         loading,
         login,

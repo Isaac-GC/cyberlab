@@ -56,6 +56,8 @@ const Login = (): React.ReactElement => {
             const resp = await login(username, password);
             if (resp.status === 401) {
                 setErrorMessage("Invalid login credentials");
+            } else {
+                Router.push("/home")
             }
         } catch (error: any) {
             console.error(error);
@@ -63,7 +65,7 @@ const Login = (): React.ReactElement => {
         }
     };
 
-    if (!loading && isAuthenticated) Router.push("/home");
+    // if (!loading && isAuthenticated) Router.push("/home");
 
     return (
         <Layout>
