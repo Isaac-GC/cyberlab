@@ -1,5 +1,7 @@
 import { AuthProvider } from "../components/auth"
 import "../styles/styles.css"
+import "../styles/main.css"
+import "../styles/xterm.css"
 
 
 function App({ Component, pageProps }: any) {

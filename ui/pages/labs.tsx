@@ -1,5 +1,6 @@
 import Layout from "../components/layout";
-// import progressBar from "../components/progressbar";
+
+import Router, { useRouter } from "next/router";
 
 import * as React from 'react';
 import { Box } from "@mui/system";
@@ -12,6 +13,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import Script from "next/script";
+
 function createData(
     name: string,
     progress: number,
@@ -19,16 +22,16 @@ function createData(
     return { name, progress };
   }
   
-  const rows = [
+const rows = [
     createData('Frozen yoghurt', 0),
     createData('Ice cream sandwich', 20),
     createData('Eclair', 53),
     createData('Cupcake', 72),
     createData('Gingerbread', 100),
-  ];
-
+];
 
 const LabsPage = (): React.ReactElement => {
+
     return (
         <Layout>
             <h1>{} Module Labs</h1>
@@ -56,10 +59,13 @@ const LabsPage = (): React.ReactElement => {
                     `,
                     }}
                 >
-                    <Box sx={{ gridArea: 'main', bgcolor: 'text.disabled', color: 'background.paper' }}>Main</Box>
+                    <Box sx={{ gridArea: 'main', bgcolor: 'text.disabled',  color: 'background.paper' }}>
+                        {/* <DynamicTerminal /> */}
+                        <div id="terminal"></div>
+                    </Box>
 
                     {/* Lab Task Menu area */}
-                    <Box sx={{ gridArea: 'sidebar', maxWidth: 'md' }}>    
+                    <Box sx={{ gridArea: 'sidebar', maxWidth: 'md', maxHeight: 'md'}}>    
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
@@ -89,6 +95,8 @@ const LabsPage = (): React.ReactElement => {
                     </Box>
                 </Box>
             </Box>
+            {/* <Script src="scripts/jquery-3.1.1.slim.min.js" strategy="lazyOnload" /> */}
+            
         </Layout>
     )
 }
