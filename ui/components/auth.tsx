@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/router";
+import { Router } from "@mui/icons-material";
 
-const API_BASE = "http://localhost:8000/api"
+
+const API_BASE = "http://localhost:8000/api";
 
 /**
  URLS Used:
@@ -8,6 +11,9 @@ const API_BASE = "http://localhost:8000/api"
  - /token/refresh
  - /user/
  **/
+
+// TODO Clean up and make authentication flow cleaner
+
 
 interface User {
     id: string;
@@ -20,6 +26,7 @@ interface TokenResponse {
     access: string;
     access_expires: number;
 }
+
 
 const makeUrl = (endpoint: string): string => {
     return API_BASE + endpoint;
@@ -77,11 +84,14 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElement => {
+    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const [accessToken, setAccessToken] = useState<string>("");
     const [accessTokenExpiry, setAccessTokenExpiry] = useState<number | null>(null);
+    const [authorized, isAuthorized] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const setNotAuthenticated = (): void => {
         setIsAuthenticated(false);
@@ -110,11 +120,12 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
             setIsAuthenticated(true);
             setLoading(false);
         }
+        if (user?.is_admin === 1) {
+            setIsAdmin(true);
+        }
     };
 
-    useEffect(() => {
-        initAuth()
-    }, [initAuth]);
+
 
     const initUser = async (token: string): Promise<void> => {
         const resp = await fetchUser(token);
@@ -129,8 +140,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
             setNotAuthenticated();
             return '';
         }
-        const tokenData = await resp.json();
-        handleNewToken(tokenData);
+        const tokenData = await resp.json();true
         if (user === null) {
             console.log("No user is loaded. Attempting to load from refreshed token...");
             await initUser(tokenData.access);
@@ -187,8 +197,62 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         });
     };
 
+
+    // Authenticated Route Guarding Logic
+    const routeCheck = (url: string): void => {
+        const loginPage = 'login';
+        const homePage  = '/';
+        const currentPagePath = url.split('?')[0];
+
+        function returnToLoginPage() {
+            isAuthorized(false);
+            router.push({
+                pathname: loginPage,
+                query: { returnUrl: router.asPath }
+            });
+        }
+
+        if (isAuthenticated) {
+            if (user === null) {
+                isAuthorized(false);
+                returnToLoginPage();
+            } else {
+                initAuth();
+            }
+        } else {
+            setNotAuthenticated();
+            returnToLoginPage();
+        }
+
+        if (!isAuthorized) {
+            if (loginPage.includes(currentPagePath) || homePage.includes(currentPagePath)) {
+                returnToLoginPage();
+            }
+        }
+    };
+
+
+    useEffect(() => {
+        
+        routeCheck(router.asPath);
+
+        const hideContent = () => isAuthorized(false);
+        router.events.on('routeChangeStart', hideContent);
+        
+        router.events.on('routeChangeComplete', routeCheck);
+
+        return () => {
+            router.events.off('routeChangeStart', hideContent);
+            router.events.on('routeChangeComplete', routeCheck);
+        }
+        
+    }, []);
+
+
+    // Values that can be used in other component/page logic
     const value = {
         isAuthenticated,
+        isAuthorized,
         user,
         loading,
         login,
@@ -200,3 +264,5 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
 };
 
 export const useAuth = (): any => useContext(AuthContext);
+
+

@@ -23,7 +23,7 @@ const loginApi = async (username: string, password: string): Promise<void> => {
     if (resp.status != 200) {
         throw new Error(await resp.text());
     }
-    Router.push("/");
+    Router.push("/home");
 };
 
 const ariaLabel = { 'aria-label': 'description' };
@@ -49,9 +49,7 @@ const Login = (): React.ReactElement => {
         color: theme.palette.text.secondary,
     }));
 
-    const handleSubmit = async (
-        event: React.FormEvent<HTMLFormElement>
-    ): Promise<void> => {
+    const handleSubmit = async ( event: React.FormEvent<HTMLFormElement> ): Promise<void> => {
         event.preventDefault();
         setErrorMessage("");
         try {
@@ -65,7 +63,7 @@ const Login = (): React.ReactElement => {
         }
     };
 
-    if (!loading && isAuthenticated) Router.push("/");
+    if (!loading && isAuthenticated) Router.push("/home");
 
     return (
         <Layout>
