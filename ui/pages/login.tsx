@@ -13,6 +13,8 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 
+import { Input } from "@mui/material";
+
 const loginApi = async (username: string, password: string): Promise<void> => {
     const resp = await fetch("/api/login", {
         method: 'POST',
@@ -27,6 +29,15 @@ const loginApi = async (username: string, password: string): Promise<void> => {
 };
 
 const ariaLabel = { 'aria-label': 'description' };
+
+
+// export async function getServerSideProps(context: any) {
+//     return {
+//       props: {
+//         csrfToken: await getCsrfToken(context),
+//       },
+//     }
+// }
 
 const Login = (): React.ReactElement => {
     const [username, setUsername] = useState<string>("");
@@ -65,7 +76,7 @@ const Login = (): React.ReactElement => {
         }
     };
 
-    // if (!loading && isAuthenticated) Router.push("/home");
+    if (!loading && isAuthenticated) Router.push("/home");
 
     return (
         <Layout>
@@ -76,8 +87,13 @@ const Login = (): React.ReactElement => {
                 flexDirection: 'column'
                 }}>
                 <Typography component="h1" variant="h5">Sign In</Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate 
-                sx={{ mt: 1 }}>
+                <Box 
+                 component="form" 
+                 onSubmit={handleSubmit} 
+                 noValidate 
+                 sx={{ mt: 1 }}
+                >
+                {/* <Input type="hidden" name="csrfToken" defaultValue={ csrfToken }></Input> */}
                 <TextField
                     margin="normal"
                     required

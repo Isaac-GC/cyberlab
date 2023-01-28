@@ -11,6 +11,7 @@ class LabTaskStatusSerializer(serializers.ModelSerializer):
             "id",
             "user_id",
             "task_id",
+            "task_name",
             "task_status_name",
         )
 

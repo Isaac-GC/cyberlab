@@ -505,3 +505,32 @@ a:hover code {
 .highlight .il {
     color: #099
 }
+
+.react-terminal-wrapper {
+    padding: 10px !important;
+}
+
+.react-terminal-wrapper:before {
+    all: unset !important;
+}
+
+.react-terminal-wrapper:after {
+    all: unset !important;
+}
+
+.css-124b5zl {
+    background-color: unset !important;
+}
+
+.css-hna4oi-MuiButtonBase-root-MuiButton-root:hover {
+    background-color: unset !important;
+}
+
+.css-hna4oi-MuiButtonBase-root-MuiButton-root:active {
+    background-color: unset !important;
+}
+
+.react-terminal-line, .react-terminal-line::before {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+}

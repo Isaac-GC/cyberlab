@@ -10,7 +10,6 @@ const Header = (): React.ReactElement => {
 
     return (
         <header>
-            <Script src="scripts/xterm.js" />
             <NavMenu />
         </header>
 

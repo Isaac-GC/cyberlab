@@ -2,6 +2,7 @@ from rest_framework import generics, response, serializers
 from rest_framework.permissions import IsAuthenticated
 
 from ..models import labtask
+from ..models import labtaskstatus
 
 
 class LabTaskSerializer(serializers.ModelSerializer):
@@ -11,14 +12,7 @@ class LabTaskSerializer(serializers.ModelSerializer):
             "id",
             "task_name",
             "task_details",
-            "lab_module",
-            "uses_vm",
-            "uses_md",
-            "terminal1",
-            "terminal2",
-            "terminal3",
-            "terminal4",
-            "custom_text",
+            "lab_module"
         )
 
 
@@ -26,5 +20,10 @@ class LabTaskView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class   = LabTaskSerializer
 
-    def get_object(self):
-        return self.request.user
+    def get_context_data(self):
+        
+
+
+
+    # def get_object(self):
+    #     return self.request.user

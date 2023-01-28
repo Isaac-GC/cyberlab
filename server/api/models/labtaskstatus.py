@@ -7,6 +7,7 @@ from . import labtask, user
 class LabTaskStatus(models.Model):
     user_id = models.ForeignKey(user.User, on_delete=models.CASCADE)
     task_id = models.ForeignKey(labtask.LabTask, on_delete=models.CASCADE)
+    user_has_access = models.BooleanField(default=False)
 
     class TaskStatus(models.TextChoices):
         NOT_DONE = 'ND', _('Not Done')

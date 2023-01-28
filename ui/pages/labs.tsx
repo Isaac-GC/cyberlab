@@ -1,36 +1,114 @@
 import Layout from "../components/layout";
 
 import Router, { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 import * as React from 'react';
 import { Box } from "@mui/system";
-import { LinearProgress, Typography } from "@mui/material";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Typography } from "@mui/material";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
-import Script from "next/script";
+import Terminal, { ColorMode, TerminalOutput } from 'react-terminal-ui';
+import CommandParser from "../components/command-parser";
 
-function createData(
-    name: string,
-    progress: number,
-  ) {
-    return { name, progress };
+import { useAuth } from "../components/auth"
+import LabList from "../components/lab-list";
+import { Constants } from "../utils/constants";
+
+// Tab Controller
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography component="div">{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
   }
   
-const rows = [
-    createData('Frozen yoghurt', 0),
-    createData('Ice cream sandwich', 20),
-    createData('Eclair', 53),
-    createData('Cupcake', 72),
-    createData('Gingerbread', 100),
-];
+  function a11yProps(index: number) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+  }
+
+  function makeApiUrl(path: string) {
+    return Constants.API_BASE + path;
+  }
+
+
+  async function fetchLabTasks(token: string): Promise<Response> {
+    const url = makeApiUrl("/lab_tasks");
+    
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`
+        }   
+    })
+  }
+  
+const { getToken } = useAuth();
+
 
 const LabsPage = (): React.ReactElement => {
+    // const [colorMode, setColorMode] = useState(ColorMode.Dark);
+    const [currentTab, setCurrentTab] = useState(0);
+    const [labData, setLabData] = useState([]);
+
+    const token = getToken();
+
+    useEffect(() => {
+        fetchLabTasks(token)
+          .then((res) => res.json())
+          .then((data) => {
+            setLabData(data)
+            })
+    }, []);
+
+
+
+    const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
+        setCurrentTab(newTab);
+    };
+
+    const [terminalLineData, setTerminalLineData] = useState([
+        <TerminalOutput>LabOS v0.1 - Type 'help' to print or describe usage of the command</TerminalOutput>
+      ]);
+
+    function onInput (input: string) {
+        let ld = [...terminalLineData];
+        let trimmedLd = input.toLocaleLowerCase().trim();
+
+        let cmdOutput: string = CommandParser(input);
+        // ld.push(<TerminalOutput>{input}</TerminalOutput>);
+        // if (trimmedLd === 'rot13') {
+        if (trimmedLd === 'clear') {
+            ld = [];
+        } else {
+            ld.push(<TerminalOutput>{ cmdOutput }</TerminalOutput>);
+        }
+        setTerminalLineData(ld);
+    } 
+    // Move Terminal into its own file that creates a list of commands and imports them
 
     return (
         <Layout>
@@ -60,43 +138,32 @@ const LabsPage = (): React.ReactElement => {
                     }}
                 >
                     <Box sx={{ gridArea: 'main', bgcolor: 'text.disabled',  color: 'background.paper' }}>
-                        {/* <DynamicTerminal /> */}
-                        <div id="terminal"></div>
+                        <Terminal colorMode={ ColorMode.Dark }  onInput={ onInput }>
+                            { terminalLineData }
+                        </Terminal>
                     </Box>
 
                     {/* Lab Task Menu area */}
-                    <Box sx={{ gridArea: 'sidebar', maxWidth: 'md', maxHeight: 'md'}}>    
-                        <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <TableHead>
-                                <TableRow>
-                                    <TableCell align="left">Module Name</TableCell>
-                                    <TableCell align="center">Progress</TableCell>
-                                </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow
-                                    hover
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Typography>{Math.round(row.progress)}%</Typography>
-                                        <LinearProgress variant="determinate" value={row.progress} color="success"/></TableCell>
-                                    </TableRow>
-                                ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                    <Box sx={{ gridArea: 'sidebar', maxWidth: 'md', maxHeight: 'md'}}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <Tabs 
+                            value={currentTab} 
+                            onChange={handleTabChange} 
+                            aria-label="" 
+                            >
+                                <Tab label="Labs" {...a11yProps(0)} />
+                                <Tab label="Description" {...a11yProps(1)} />
+                            </Tabs>
+                        </Box>
+                        <TabPanel value={currentTab} index={0}>
+                            <LabList></LabList>
+                        </TabPanel>
+                        <TabPanel value={currentTab} index={1}>
+                            Item one
+                        </TabPanel>
                     </Box>
                 </Box>
-            </Box>
-            {/* <Script src="scripts/jquery-3.1.1.slim.min.js" strategy="lazyOnload" /> */}
-            
+            </Box>            
         </Layout>
     )
 }

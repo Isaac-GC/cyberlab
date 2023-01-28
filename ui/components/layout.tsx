@@ -29,8 +29,6 @@ const Layout = ({ children, ...props }: any ): React.ReactElement => {
                     <Container maxWidth={false} component="main">
                         <main>{children}</main>
                     </Container>
-                    <Script src="scripts/demo.js" strategy="lazyOnload" />
-                {/* <Footer /> */}
             </ThemeProvider>
         </>
 

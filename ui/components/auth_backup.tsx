@@ -12,7 +12,7 @@ import { Constants } from "../utils/constants";
 
 // TODO Clean up and make authentication flow cleaner
 
-// Interfaces used to parse responses
+
 interface User {
     id: string;
     email: string;
@@ -25,14 +25,11 @@ interface TokenResponse {
     access_expires: number;
 }
 
-// Utility Functions
 
 const makeUrl = (endpoint: string): string => {
     return Constants.API_BASE + endpoint;
 }
 
-
-// Functions used to connect and retrieve the tokens
 const fetchToken = (username: string, password: string): Promise<Response> => {
     const url = makeUrl("/token/");
 
@@ -46,7 +43,7 @@ const fetchToken = (username: string, password: string): Promise<Response> => {
     });
 };
 
-const fetchRefreshToken = (): Promise<Response> => {
+const fetchNewToken = (): Promise<Response> => {
     const url = makeUrl("/token/refresh/");
     
     return fetch(url, {
@@ -57,6 +54,7 @@ const fetchRefreshToken = (): Promise<Response> => {
         credentials: "include",
     });
 }
+
 
 async function fetchUser(token: string): Promise<Response> {
     const url = makeUrl("/profile/");
@@ -69,8 +67,6 @@ async function fetchUser(token: string): Promise<Response> {
     });
 }
 
-
-// Set up the Authentication context to ensure users are properly auth'd
 type AuthContextProps = {
     isAuthenticated: boolean;
     loading: boolean;
@@ -85,21 +81,15 @@ interface AuthProviderProps {
     children: React.ReactNode;
 }
 
-
-// Setup the Authorization and Authentication provider
 export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElement => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-
-    // Server side checks
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isAuthorized, setIsAuthorized] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    // Client properties/checks/props
     const [user, setUser] = useState<User | null>(null);
     const [accessToken, setAccessToken] = useState<string>("");
     const [accessTokenExpiry, setAccessTokenExpiry] = useState<number | null>(null);
+    const [authorized, setIsAuthorized] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const setNotAuthenticated = (): void => {
         setIsAuthenticated(false);
@@ -116,24 +106,6 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         console.log("Checking token expiry: ", expiry);
         return expiry.getTime() > Date.now();
     };
-
-    const refreshToken = async(): Promise<string> => {
-        setLoading(true);
-
-        // Try to refresh the token
-        const resp = await fetchRefreshToken();
-        if (!resp.ok) {
-            setNotAuthenticated();
-            return '';
-        }
-        // Get the Access token after receiving the new 'refreshed' token
-        const tokenData = await resp.json();
-        if (user === null) {
-            console.log("No user is loaded. Attempting load from refreshed token...");
-            await initUser(tokenData.access);
-        }
-        return tokenData.access;
-    }
 
     const initAuth = async (): Promise<void> => {
         setLoading(true);
@@ -161,6 +133,20 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         setUser(user);
     };
 
+    const refreshToken = async (): Promise<string> => {
+        setLoading(true);
+        const resp = await fetchNewToken();
+        if (!resp.ok) {
+            setNotAuthenticated();
+            return '';
+        }
+        const tokenData = await resp.json();true
+        if (user === null) {
+            console.log("No user is loaded. Attempting to load from refreshed token...");
+            await initUser(tokenData.access);
+        }
+        return tokenData.access;
+    };
 
     const handleNewToken = (data: TokenResponse): void => {
         setAccessToken(data.access);
@@ -215,24 +201,9 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
 
     // Authenticated Route Guarding Logic
     const routeCheck = (url: string): void => {
+        const loginPage = 'login';
+        const homePage  = '/';
         const currentPagePath = url.split('?')[0];
-
-        // if (!isAuthenticated) {
-        //     setNotAuthenticated();
-        //     router.push({
-        //         pathname: '/login',
-        //     })
-        // Doing a double check if authenticated
-        // } else if (!isAuthorized && isAuthenticated) {
-        //     // setIsAuthenticated(false);
-        //     console.log("Either page doesn't exist or users doesn't have permissions to access the page");
-        //     router.push({
-        //         pathname: '/home',
-        //     })
-        // } else {
-        //     setNotAuthenticated();
-        //     console.log("An error occurred. Returning user to login page");
-        // }
 
         // function returnToLoginPage() {
         //     isAuthorized(false);
@@ -257,27 +228,17 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         //     console.log("Not authenticated");
         // }
 
-        // if (!authorized)  {
-        //     if (!loginPage.includes(currentPagePath) || !homePage.includes(currentPagePath)) {
-        //         // returnToLoginPage();
-        //         console.log(currentPagePath);
-        //         console.log("Not authorized");
-        //     } else if (isAuthenticated) {
-        //         initAuth();
-        //     }
-        // } else {
-        //     setIsAuthenticated(true);
-        //     setIsAuthorized(true);
-        // }
-        if (isAuthenticated) {
-            if (user === null) {
-                setIsAuthorized(false);
-
-            } else {
+        if (!authorized)  {
+            if (!loginPage.includes(currentPagePath) || !homePage.includes(currentPagePath)) {
+                // returnToLoginPage();
+                console.log(currentPagePath);
+                console.log("Not authorized");
+            } else if (isAuthenticated) {
                 initAuth();
             }
         } else {
-            setNotAuthenticated();
+            setIsAuthenticated(true);
+            setIsAuthorized(true);
         }
     };
 
@@ -286,13 +247,13 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
         
         routeCheck(router.asPath);
 
-        // const hideContent = () => setIsAuthorized(false);
-        // router.events.on('routeChangeStart', hideContent);
+        const hideContent = () => setIsAuthorized(false);
+        router.events.on('routeChangeStart', hideContent);
         
         router.events.on('routeChangeComplete', routeCheck);
 
         return () => {
-            // router.events.off('routeChangeStart', hideContent);
+            router.events.off('routeChangeStart', hideContent);
             router.events.on('routeChangeComplete', routeCheck);
         }
         
@@ -302,7 +263,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): React.ReactElemen
     // Values that can be used in other component/page logic
     const value = {
         isAuthenticated,
-        isAuthorized,
+        authorized,
         isAdmin,
         user,
         loading,
